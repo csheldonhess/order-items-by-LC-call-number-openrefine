@@ -1,6 +1,8 @@
 # order-items-by-LC-call-number-openrefine
 An OpenRefine recipe that puts items in order by call number, even if the spacing is inconsistent (e.g. call numbers in the format AB123 and also AB 123).
 
+Note: This assumes your call numbers are in a column called `Call Number`
+
 TODO: Make it only add a _single_ space into the call number. (E.g. *AB123 .C23* should not become *AB 123 .C 23*)
 
 Here's what the list of operations looks like, if you want to recreate it yourself, rather than pasting in an entire recipe of dubious origin:
