@@ -1,0 +1,119 @@
+[
+  {
+    "op": "core/text-transform",
+    "description": "Text transform on cells in column Call Number using expression grel:value.replace(/(\\p{IsAlphabetic})(?=\\d)/,'$1 ')",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": []
+    },
+    "columnName": "Call Number",
+    "expression": "grel:value.replace(/(\\p{IsAlphabetic})(?=\\d)/,'$1 ')",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column Full num (not for sorting) at index 3 based on column Call Number using expression grel:value.partition(' ')[2].trim()",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": []
+    },
+    "newColumnName": "Full num (not for sorting)",
+    "columnInsertIndex": 3,
+    "baseColumnName": "Call Number",
+    "expression": "grel:value.partition(' ')[2].trim()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column Call Letter at index 3 based on column Call Number using expression grel:value.partition(' ')[0].trim()",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": []
+    },
+    "newColumnName": "Call Letter",
+    "columnInsertIndex": 3,
+    "baseColumnName": "Call Number",
+    "expression": "grel:value.partition(' ')[0].trim()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column Letter2 at index 5 based on column Full num (not for sorting) using expression grel:value.split(' ')[1].replace('.','').trim()",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": []
+    },
+    "newColumnName": "Letter2",
+    "columnInsertIndex": 5,
+    "baseColumnName": "Full num (not for sorting)",
+    "expression": "grel:value.split(' ')[1].replace('.','').trim()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column Num (for sorting) at index 5 based on column Full num (not for sorting) using expression grel:value.split(' ')[0].trim()",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": []
+    },
+    "newColumnName": "Num (for sorting)",
+    "columnInsertIndex": 5,
+    "baseColumnName": "Full num (not for sorting)",
+    "expression": "grel:value.split(' ')[0].trim()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column Full num (not for sorting)",
+    "columnName": "Full num (not for sorting)"
+  },
+  {
+    "op": "core/row-reorder",
+    "description": "Reorder rows",
+    "mode": "record-based",
+    "sorting": {
+      "criteria": [
+        {
+          "errorPosition": 1,
+          "caseSensitive": false,
+          "valueType": "string",
+          "column": "Call Letter",
+          "blankPosition": 2,
+          "reverse": false
+        },
+        {
+          "errorPosition": 1,
+          "valueType": "number",
+          "column": "Num (for sorting)",
+          "blankPosition": 2,
+          "reverse": false
+        },
+        {
+          "errorPosition": 1,
+          "caseSensitive": false,
+          "valueType": "string",
+          "column": "Letter2",
+          "blankPosition": 2,
+          "reverse": false
+        }
+      ]
+    }
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column Call Letter",
+    "columnName": "Call Letter"
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column Num (for sorting)",
+    "columnName": "Num (for sorting)"
+  },
+  {
+    "op": "core/column-removal",
+    "description": "Remove column Letter2",
+    "columnName": "Letter2"
+  }
+]
